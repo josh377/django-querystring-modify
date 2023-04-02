@@ -44,7 +44,8 @@ Returns: ?sort_order=author&sort_order=date&sort_order=type
 
 <p>
 <b>Putting it all together:</b><br>
-For given URL: ?sort=date&sort=type&sort=author&type=books&page=3&first_name=Spongebob&last_name=Squarepants<br>
+For given URL: <br>
+?sort=date&sort=type&sort=author&type=books&page=3&first_name=Spongebob&last_name=Squarepants<br>
 <i>{% qs_modify request sort='author' type='magazines' page=4 CLEAR='first_name,last_name' %}</i><br>
 Returns: ?sort=-author&sort=date&sort=type&type=magazines&page=4
 </p>
