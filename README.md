@@ -9,7 +9,9 @@ For given URL: ?page=2
 {% qs_modify request page=3 %}
 Returns: ?page=3
 
+
 "Clear" Usage: To clear a field, as in when removing a filter
+
 For given URL: ?page=2&type=book
 {% qs_modify request CLEAR='type' %}
 Returns: ?page=2
@@ -20,7 +22,10 @@ For given URL: ?page=2&type=book&sort=date
 {% qs_modify request CLEAR='type:sort' clear_delimiter=':' %}
 Returns: ?page=2
 
+
+
 Sort Usage: When modifying sort order of a dataset
+
 For given URL: ?sort=date&sort=type&sort=-author
 {% qs_modify request sort='author' %}
 Returns: ?sort=author&sort=date&sort=type
