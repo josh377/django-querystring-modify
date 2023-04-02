@@ -32,9 +32,9 @@ def qs_modify(request, clear_keyword='CLEAR', clear_delimiter=',', sort_keyword=
     Returns: ?sort=author&sort=date&sort=type
 
     Can modify sort keyword as needed by including 'sort_keyword' kwarg:
-    For given URL: ?sort_order=date&sort=type&sort=-author
+    For given URL: ?sort_order=date&sort_order=type&sort_order=-author
     {% qs_modify request sort_keyword='sort_order' sort_order='author' %}
-    Returns: ?sort=author&sort=date&sort=type
+    Returns: ?sort_order=author&sort_order=date&sort_order=type
 
     """
 
@@ -61,30 +61,37 @@ def qs_modify(request, clear_keyword='CLEAR', clear_delimiter=',', sort_keyword=
 
         elif key == sort_keyword:
             # If marked as sort, process sort list
-            current_values = params_dict[sort_keyword]
 
-            if value in current_values:
-                # If ascending value present
+            if sort_keyword in params_dict.keys():
+                # If already a sort order present
+                current_values = params_dict[sort_keyword]
 
-                # Switch to descending
-                updated_value = f'-{value}'
-                current_values.remove(value)
+                if value in current_values:
+                    # If ascending value present
 
-            elif f'-{value}' in current_values:
-                # If descending value present
+                    # Switch to descending
+                    updated_value = f'-{value}'
+                    current_values.remove(value)
 
-                # Switch to ascending
-                updated_value = value
-                current_values.remove(f'-{value}')
+                elif f'-{value}' in current_values:
+                    # If descending value present
+
+                    # Switch to ascending
+                    updated_value = value
+                    current_values.remove(f'-{value}')
+
+                else:
+                    # Value not present in current list
+
+                    # Default to ascending
+                    updated_value = value
+
+                # Append to front of list
+                current_values.insert(0, updated_value)
 
             else:
-                # Value not present in current list
-
-                # Default to ascending
-                updated_value = value
-
-            # Append to front of list
-            current_values.insert(0, updated_value)
+                # If no sort order in querystring, add one
+                params_dict[sort_keyword] = value
 
         # Standard case
         else:
